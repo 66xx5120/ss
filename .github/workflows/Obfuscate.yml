@@ -32,22 +32,19 @@ jobs:
         run: |
           wget -O origin.js https://raw.githubusercontent.com/bia-pain-bache/BPB-Worker-Panel/refs/heads/main/build/unobfuscated-worker.js
 
-      - name: Minify JS
-        run: npx terser origin.js --output minworker.js
-
       - name: Obfuscate BPB worker js
         run: |
-          javascript-obfuscator minworker.js --output _worker.js \
+          javascript-obfuscator origin.js --output _worker.js \
           --compact true \
           --control-flow-flattening true \
-          --control-flow-flattening-threshold 1 \
+          --control-flow-flattening-threshold 0.5 \
           --dead-code-injection true \
-          --dead-code-injection-threshold 1 \
+          --dead-code-injection-threshold 0.5 \
           --identifier-names-generator hexadecimal \
           --rename-globals true \
           --string-array true \
           --string-array-encoding 'rc4' \
-          --string-array-threshold 1 \
+          --string-array-threshold 0.5 \
           --transform-object-keys true \
           --unicode-escape-sequence true
           zip -j worker.zip _worker.js
